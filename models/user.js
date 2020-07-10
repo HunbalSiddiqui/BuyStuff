@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 
 const crypto = require('crypto');
 
-const uuidv1 = require('uuid/v1');
+//depreciated method
+// const uuidv1 = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
+
+
 
 const Schema = mongoose.Schema;
 
@@ -56,9 +60,9 @@ var userSchema = new Schema({
       return this._password
   })
 
-  userSchema.method = {
+  userSchema.methods = {
     securePassword : function(plainPassword){
-          if(!encry_password)
+          if(!plainPassword)
           {
               return ""
           }
