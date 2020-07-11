@@ -35,6 +35,9 @@ const userRoutes = require('./routes/user')
 app.use('/api',userRoutes)//craete a route otherwise app will crash
 
 
+const categoryRoutes = require('./routes/category')
+app.use('/api',categoryRoutes)//craete a route otherwise app will crash
+
 
 //Port
 const port = process.env.PORT || 8000;
