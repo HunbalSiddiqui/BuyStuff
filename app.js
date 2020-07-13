@@ -38,7 +38,11 @@ app.use('/api',userRoutes)//craete a route otherwise app will crash
 const categoryRoutes = require('./routes/category')
 app.use('/api',categoryRoutes)//craete a route otherwise app will crash
 
+const productRoutes = require('./routes/product')
+app.use('/api',productRoutes)
 
+const orderRoutes = require('./routes/order')
+app.use('/api',orderRoutes)
 //Port
 const port = process.env.PORT || 8000;
 //Starting point of a server
