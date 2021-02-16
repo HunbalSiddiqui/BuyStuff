@@ -32,7 +32,7 @@ exports.signup = (req, res) =>{
 
 exports.signin = (req, res) =>{
     const {email,password} = req.body;
-    const errors = validationResult(req.body)
+    const errors = validationResult(req)
     if(!errors.isEmpty())
     {
         return res.status(422).json({
@@ -44,7 +44,7 @@ exports.signin = (req, res) =>{
         if(err||!user) 
         {
             return res.status(400).json({
-                message : "USER DOES NOT EXIST"
+                error : "USER DOES NOT EXIST"
             })
         }
 
@@ -62,6 +62,7 @@ exports.signin = (req, res) =>{
         //send response to frontend
         const {_id,name,email,role} = user;
         return res.json({
+            //sending back to frontend
             token, user:{_id,name,email,role}
         })
     })
@@ -69,7 +70,7 @@ exports.signin = (req, res) =>{
 
 
 exports.signout = (req, res) =>{
-    res.clearCookie("token")//because we have cookieParser middleware to use such methods
+    res.clearCookie("token")//we have cookieParser middleware to use such methods
     res.json({
         message : "User Signout Successfully..."
     })  

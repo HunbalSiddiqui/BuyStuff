@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 
 
-var {getProductById,getProduct,createProduct,deleteProduct,updateProduct,getAllProducts} = require('../controllers/product')
+var {getProductById,getProduct,createProduct,deleteProduct,updateProduct,getAllProducts,photo} = require('../controllers/product')
 var {isSignedIn,isAdmin,isAuthenticated} = require('../controllers/auth')
 var {getUserById} = require('../controllers/user')
 
@@ -16,7 +16,8 @@ router.param('userId',getUserById)
 router.post("/product/create/:userId",isSignedIn,isAuthenticated,isAdmin
 ,createProduct)
 //read route
-router.get('/products/:productId/:userId',isSignedIn,getProduct)
+router.get('/products/get/:productId/',getProduct)
+router.get('/products/photo/:productId/',photo)
 //delete route
 router.delete('/products/:productId/:userId',isSignedIn,isAuthenticated,
 isAdmin,deleteProduct)

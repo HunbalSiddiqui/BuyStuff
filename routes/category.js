@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+const { check, validationResult } = require('express-validator');
 
 var {getCategoryById,createCategory,getCategory,getAllCategory,updateCategory,removeCategory} = require('../controllers/category')
 var {isSignedIn,isAdmin,isAuthenticated} = require('../controllers/auth')
@@ -11,6 +12,7 @@ router.param("categoryId",getCategoryById)
 //routes
 //create
 router.post("/category/create/:userId"
+,check('name').isLength({min : 1}).withMessage('Category name must have atleast 1 character.')
 ,isSignedIn,isAuthenticated,isAdmin,createCategory)
 //read
 router.get("/category/:categoryId",getCategory)

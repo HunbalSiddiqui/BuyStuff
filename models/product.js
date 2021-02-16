@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const {Schema,ObjectId} = mongoose.Schema;
 
 
-var productSchema = mongoose.Schema({
+var productSchema = mongoose.Schema({ 
     name : {
         type : String,required : true,
         trim : true,maxlength : 32
@@ -11,13 +11,15 @@ var productSchema = mongoose.Schema({
     description : {
         type : String, required : true,
         trim : true,maxlength : 2000
-    },
+    }, 
     price : {
         type : Number, trim : true,
         required : true,maxlength : 32 
     },
     category : {
-        type : ObjectId,
+        type : mongoose.Schema.Types.ObjectId,
+        // type : String,
+        // default : "TODO CATEGORY"
         ref : "Category",
         require : true
     },

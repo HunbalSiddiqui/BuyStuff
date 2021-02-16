@@ -1,4 +1,5 @@
 const Category = require("../models/category")
+const { check, validationResult } = require('express-validator');
 
 //middleware
 exports.getCategoryById = (req,res,next,id)=>{
@@ -15,6 +16,14 @@ exports.getCategoryById = (req,res,next,id)=>{
 //not middlewares
 exports.createCategory = (req,res) => {
     const category = new Category(req.body);
+    const errors = validationResult(req)
+    if(!errors.isEmpty())
+    {
+        return res.status(422).json({
+            error : errors.array()[0].msg,
+            param : errors.array()[0].param
+        })
+    }
     category.save((err,category)=>{
         if(err)
         {

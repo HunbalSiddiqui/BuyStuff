@@ -13,6 +13,7 @@ exports.getUserById = (req,res,next,id)=>{
 }
 exports.pushOrderInPurchaseList = (req,res,next)=>{
     var purchases = [];
+    // console.log("user purchase list ",req.body.order)
     req.body.order.products.forEach(product => {
         purchases.push({
             _id : product._id,
@@ -34,6 +35,7 @@ exports.pushOrderInPurchaseList = (req,res,next)=>{
         {new : true},
         (err, purchases)=>{
             if(err){
+                console.log("find one and update error :" ,err)
                 return res.status(400)
                 .json({error : "UNABLE TO SAVE PURCHASE LIST"})
             }

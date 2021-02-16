@@ -26,9 +26,11 @@ exports.createOrder = (req,res)=>{
     order.save((err, order)=>{
         if(err)
         {
+            console.log("error",err)
             return res.status(400)
             .json({error : "Failed to save your order"})
         }
+        console.log("order ",order)
         return res.json(order)
     })
 }

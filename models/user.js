@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// mongoose.set('useFindAndModify', false);
 
 const crypto = require('crypto');
 
@@ -71,7 +72,7 @@ var userSchema = new Schema({
                             .update(plainPassword)
                             .digest('hex')
           } catch (err) {
-              return " "
+              return ""
           }
     }, 
     authenticate : function(plainPassword){

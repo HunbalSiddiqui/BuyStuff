@@ -16,7 +16,7 @@ router.post('/signup',[
 router.post('/signin',[
     //Validation
     check('email').isEmail().withMessage('Email Must be provided.'),
-    check('password').isLength({min : 5}).withMessage('Password Field is req.'),
+    check('password').isLength({min : 5}).withMessage('Password must contain atleast 5 letters.'),
 ],signin)
 
 router.get("/signout",signout)

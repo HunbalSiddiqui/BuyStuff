@@ -7,44 +7,56 @@ exports.getProductById = (req,res,next,id) => {
     Product.findById(id)
     .populate("category")
     .exec((err,product)=>{
+        // console.log("product = "+product)
         if(err)
         {
             return res.status(400).json({
-                error : "NO PRODUCT FOUND."
+                error : "NO PRODUCT FOUND BY ID."
             })
         }
         req.product = product
         next()
     })
 }
-//TODO: will be used in future
-exports.photo = (req,res,next)=>{
-    if(req.product.photo.data){
-        res.set("Content-Type", req.product.photo.contentType);
+exports.photo = (req,res,next) =>{
+    if(req.product.photo.data)
+    {
+        res.set("Content-Type",req.product.photo.contentType)
         return res.send(req.product.photo.data)
     }
     next()
 }
 //TODO: will be used in future
 exports.updateStock = (req,res,next)=>{
+    console.log("present in update stock")
     let myOperations = req.body.order.products.map(product=>{
         return {
-            updateOne : {
-                filter : {_id:product._id},//finding the product through id. docs of bulkwrite
-                update : {$inc : {stock: - product.count, sold: + product.count}}
+            updatedOne : {
+                //filter : {_id:product._id},//finding the product through id. docs of bulkwrite
+                //update : {$inc : {stock: - product.count, sold: + product.count}},
+                productId : product._id
             }
         }
     })
-    Product.bulkWrite(
-        myOperations,{},
-        (err,products)=>{
-            if(err)
-            {
-                return res.status(400)
-                .json({error : "Bulk operations failed"})
+    req.body.order.products.forEach(product => {
+        Product.findOneAndUpdate(
+            //find through id
+            {_id : product._id},
+            //update field
+            {$inc : {stock: - 1, sold: + 1}},
+            //compulsory 
+            {new : true},
+            (err, updated)=>{
+                if(err){
+                    console.log("find one and update error :" ,err)
+                    return res.status(400)
+                    .json({error : "UNABLE TO SAVE PURCHASE LIST"})
+                }
+                console.log("leaving update stock")
+                next();
             }
-            next()
-        })
+        )
+    });
 }
 
 //post
@@ -73,11 +85,11 @@ exports.createProduct = (req,res)=>{
         //handle file here
         if(file.photo)
         {
-            console.log("issue is hereeee <------")
+            // console.log("issue is hereeee <------")
             if(file.photo.size>2097152)//3mb
             {
                 return res.status(400)
-                .json({error: "File sizee too big!"})
+                .json({error: "Image size too big!"})
             }
             product.photo.data = fs.readFileSync(file.photo.path);
             product.photo.contentType = file.photo.type;
@@ -102,7 +114,7 @@ exports.getProduct = (req,res) =>{
     return res.json(req.product)
 }
 
-//read
+//delete
 exports.deleteProduct = (req,res)=>{
     var product = req.product
     //since this is also an object from mongoose

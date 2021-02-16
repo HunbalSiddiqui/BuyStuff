@@ -11,7 +11,8 @@ const cors = require('cors');
 mongoose.connect(process.env.DATABASE,{
 useNewUrlParser: true,
 useUnifiedTopology : true,
-useCreateIndex : true
+useCreateIndex : true,
+useFindAndModify:false
 })
 .then(()=>{
     console.log("DB IS CONNECTED")
@@ -43,9 +44,19 @@ app.use('/api',productRoutes)
 
 const orderRoutes = require('./routes/order')
 app.use('/api',orderRoutes)
+
+//stripe rout
+const stripeRoutes = require('./routes/stripePayment')
+app.use('/api',stripeRoutes)
+//paypal and all other card
+const paymentARoutes = require('./routes/paymentA')
+app.use('/api',paymentARoutes)
 //Port
 const port = process.env.PORT || 8000;
 //Starting point of a server
 app.listen(port,()=>{
     console.log('app is listening at 8000')
 })
+
+console.log(process.env)
+// console.log(app.get('env'))
